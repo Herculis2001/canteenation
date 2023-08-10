@@ -31,10 +31,17 @@ import { DeleteIcon } from "@chakra-ui/icons";
 import "./Cart.css";
 import { useCart } from "react-use-cart";
 import { RoleContext } from "../../App";
-import { useContext } from "react";
+import { useContext , useState } from "react";
+import BkashPayment from './BkashPayment';
 
 export default function ItemPage() {
   const role = useContext(RoleContext);
+  const [paymentStatus, setPaymentStatus] = useState('');
+
+  const handlePaymentSuccess = (data) => {
+    // Handle successful payment, update paymentStatus, etc.
+    setPaymentStatus('Payment successful');
+  };
   const {
     isEmpty,
     items,
@@ -241,7 +248,13 @@ export default function ItemPage() {
               bg={"#ffd803"}
               textColor={"#272343"}
               _hover={{ bg: "#e3f6f5" }}
+              onClick={handlePaymentSuccess}
             >
+              <Box>
+  {/* Other checkout components */}
+  <BkashPayment totalAmount={1000} onPaymentSuccess={handlePaymentSuccess} />
+  {paymentStatus && <Text>{paymentStatus}</Text>}
+</Box>
               <Icon as={BsCreditCard2BackFill} />
               &nbsp;&nbsp;Nagad
             </Button>
